@@ -1,0 +1,321 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import clsx from "clsx";
+import {
+  ArrowUpRight,
+  Clock,
+  Mail,
+  Menu as MenuIcon,
+  Phone,
+  MapPin,
+  X,
+} from "lucide-react";
+import { ClosingSoonBanner } from "./ClosingSoonBanner";
+import { BrandMark } from "./BrandMark";
+import { usePrefs } from "./Providers";
+import { PreferenceMenu } from "./PreferenceMenu";
+import { SiteSearch } from "./SiteSearch";
+import { CopyButton } from "./CopyButton";
+import { CAFE } from "@/lib/cafe";
+
+export function SiteHeader() {
+  const { tr } = usePrefs();
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => setOpen(false), [pathname]);
+
+  const links = [
+    { href: "/", label: tr.home },
+    { href: "/menu", label: tr.menu },
+    { href: "/about", label: tr.about },
+    { href: "/gallery", label: tr.gallery },
+    { href: "/reserve", label: tr.reserve },
+    { href: "/loyalty", label: tr.loyalty },
+    { href: "/contact", label: tr.contact },
+  ];
+
+  // a link is active on its own page and on any page below it (/menu/cheese-omelette -> Menu)
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+
+  const home = pathname === "/";
+  const telHref = `tel:${CAFE.phoneDisplay.replace(/\s/g, "")}`;
+
+  return (
+    <>
+      <header className={clsx("site-header bp-header", home && "is-home", scrolled && "scrolled")}>
+        <ClosingSoonBanner />
+        <div className="header-inner">
+          <Link href="/" className="brand" aria-label="Bagara & Pulusu home">
+            <BrandMark priority sizes="48px" />
+            <span className="brand-text">
+              <strong>BAGARA</strong>
+              <small>&amp; PULUSU</small>
+            </span>
+          </Link>
+
+          <nav className="nav-links" aria-label="Main">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={clsx(isActive(l.href) && "active")}
+                aria-current={isActive(l.href) ? "page" : undefined}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="header-tools">
+            {home && (
+              <a className="bp-header-call" href={telHref}>
+                <span className="bp-header-call-ico" aria-hidden>
+                  <Phone size={15} />
+                </span>
+                <span>
+                  <small>Call to order</small>
+                  <b>{CAFE.phoneDisplay}</b>
+                </span>
+              </a>
+            )}
+            <SiteSearch />
+            <PreferenceMenu />
+            <Link href="/menu" className={home ? "bp-order-online" : "btn btn-gold btn-sm"}>
+              {home ? "Order Online" : "Order Now"}
+            </Link>
+            <button
+              className="burger"
+              aria-label="Open menu"
+              onClick={() => setOpen(true)}
+            >
+              <MenuIcon size={20} />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="drawer"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.25 }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "1rem",
+              }}
+            >
+              <span className="eyebrow">Bagara & Pulusu</span>
+              <button
+                className="burger"
+                style={{ display: "grid" }}
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+              >
+                <X size={20} />
+              </button>
+            </div>
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={clsx(isActive(l.href) && "active")}
+                aria-current={isActive(l.href) ? "page" : undefined}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <Link
+              href="/feedback"
+              className={clsx(isActive("/feedback") && "active")}
+              aria-current={isActive("/feedback") ? "page" : undefined}
+            >
+              {tr.feedback}
+            </Link>
+            <Link href="/menu" className="btn btn-gold" style={{ marginTop: "0.75rem" }}>
+              {home ? "Order Online" : "Order Now"}
+            </Link>
+            <div className="drawer-theme-row">
+              <PreferenceMenu />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+export function SiteFooter() {
+  const { tr } = usePrefs();
+  const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CAFE.mapsQuery)}`;
+  const telHref = `tel:${CAFE.phoneDisplay.replace(/\s/g, "")}`;
+  const mailHref = `mailto:${CAFE.email}`;
+  const explore = [
+    { href: "/menu", label: tr.menu },
+    { href: "/about", label: tr.about },
+    { href: "/gallery", label: tr.gallery },
+    { href: "/loyalty", label: tr.loyalty },
+    { href: "/faq", label: "FAQ" },
+    { href: "/feedback", label: tr.feedback },
+    { href: "/contact", label: tr.contact },
+  ];
+  const partners = [
+    { href: CAFE.zomatoUrl, label: "Zomato" },
+    { href: CAFE.swiggyUrl, label: "Swiggy" },
+    { href: CAFE.districtUrl, label: "District" },
+  ];
+
+  return (
+    <footer className="site-footer">
+      <div className="wrap">
+        <div className="footer-grid">
+          <div className="footer-brand">
+            <Link href="/" className="brand" aria-label="Bagara & Pulusu home">
+              <BrandMark sizes="48px" />
+              <span className="brand-text">
+                <strong>BAGARA</strong>
+                <small>&amp; PULUSU</small>
+              </span>
+            </Link>
+            <p className="footer-tagline">{CAFE.tagline}</p>
+            <div className="footer-cta">
+              <Link href="/reserve" className="footer-cta-btn is-primary">
+                {tr.bookTable}
+              </Link>
+              <a
+                href={mapsHref}
+                target="_blank"
+                rel="noreferrer"
+                className="footer-cta-btn"
+              >
+                Directions
+              </a>
+            </div>
+          </div>
+
+          <nav className="footer-nav" aria-label="Explore">
+            <h5>Explore</h5>
+            <div className="footer-chips">
+              {explore.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
+
+          <div className="footer-visit">
+            <h5>Visit</h5>
+            <div className="footer-visit-list">
+              <a
+                className="footer-fact"
+                href={mapsHref}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="footer-ico">
+                  <MapPin size={15} />
+                </span>
+                <span>
+                  {CAFE.addressLines[0]}
+                  <small>{CAFE.addressLines[1]}</small>
+                </span>
+              </a>
+              <p className="footer-fact">
+                <span className="footer-ico">
+                  <Clock size={15} />
+                </span>
+                <span>
+                  Open daily
+                  <small>{CAFE.hours}</small>
+                </span>
+              </p>
+              <a className="footer-fact" href={telHref}>
+                <span className="footer-ico">
+                  <Phone size={15} />
+                </span>
+                <span>
+                  Call us
+                  <small>{CAFE.phoneDisplay}</small>
+                </span>
+              </a>
+              <div className="footer-fact">
+                <span className="footer-ico">
+                  <Mail size={15} />
+                </span>
+                <span className="footer-email-line">
+                  <a href={mailHref}>{CAFE.email}</a>
+                  <CopyButton value={CAFE.email} label="Copy email" iconOnly />
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="footer-order">
+            <h5>{tr.orderPartners}</h5>
+            <div className="footer-chips is-partners">
+              {partners.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {item.label}
+                  <ArrowUpRight size={13} />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-mark" aria-hidden>
+          BAGARA
+        </div>
+        <p className="footer-legal">
+          © {new Date().getFullYear()} Bagara & Pulusu · GSTIN {CAFE.gstin}
+          <span className="footer-legal-dot" aria-hidden>
+            ·
+          </span>
+          Last updated {CAFE.updated}
+          <span className="footer-legal-dot" aria-hidden>
+            ·
+          </span>
+          <Link href="/privacy">Privacy</Link>
+          <span className="footer-legal-dot" aria-hidden>
+            ·
+          </span>
+          <Link href="/terms">Terms</Link>
+          <span className="footer-legal-dot" aria-hidden>
+            ·
+          </span>
+          <Link href="/staff/login" className="footer-staff">
+            {tr.staff} login
+          </Link>
+          <br />
+          Warm evenings in Jubilee Hills.
+        </p>
+      </div>
+    </footer>
+  );
+}

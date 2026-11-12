@@ -1,0 +1,53 @@
+import { SafeImage as Image } from "@/components/SafeImage";
+
+import { GuestTableBar } from "./GuestTableBar";
+import { SiteFooter, SiteHeader } from "./SiteHeader";
+import { Reveal } from "./Reveal";
+import { SpiceSky } from "./SpiceSky";
+import { SiteExtras } from "./SiteExtras";
+
+export function PublicShell({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <SiteExtras />
+      <SiteHeader />
+      <GuestTableBar />
+      <main id="content">{children}</main>
+      <SiteFooter />
+    </>
+  );
+}
+
+export function PageHero({
+  eyebrow,
+  title,
+  subtitle,
+  image,
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle?: string;
+  image?: string;
+}) {
+  return (
+    <section className="page-hero">
+      <SpiceSky variant="page" />
+      <div className="wrap">
+        <Reveal>
+          <span className="eyebrow" style={{ color: "var(--sky-600)" }}>
+            {eyebrow}
+          </span>
+          <h1 className="h-display h-xl" style={{ margin: "1rem 0" }}>
+            {title}
+          </h1>
+          {subtitle && <p className="lead">{subtitle}</p>}
+        </Reveal>
+      </div>
+      {image && (
+        <div className="arch-deco">
+          <Image src={image} alt="" fill sizes="190px" className="cover" />
+        </div>
+      )}
+    </section>
+  );
+}
