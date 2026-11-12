@@ -37,9 +37,9 @@ import { CAFE_MEDIA, GALLERY } from "@/lib/media";
 import { SEED_MENU } from "@/lib/menu-data";
 
 export const metadata: Metadata = {
-  title: "About Bagara & Pulusu Jubilee Hills",
+  title: "About Bagara & Pulusu Madhapur",
   description:
-    "The story of Bagara & Pulusu, Jubilee Hills: Andhra rice, fries, pulusu and thalis. Open daily 11:00 AM – 11:30 PM.",
+    "The story of Bagara & Pulusu, Madhapur: Andhra rice, fries, pulusu and thalis. Open daily 11:00 AM – 11:30 PM.",
   alternates: { canonical: "/about" },
 };
 
@@ -128,7 +128,7 @@ const VALUES = [
   {
     icon: <Flower2 size={22} />,
     title: "Moments that matter",
-    text: "Family tables in Jubilee Hills — fry, pulusu, and shared rice.",
+    text: "Family tables in Madhapur — fry, pulusu, and shared rice.",
     img: "",
   },
 ];
@@ -207,7 +207,7 @@ const STEPS = [
 
 const FACTS = [
   { icon: <Clock size={18} />, title: "Open daily", text: CAFE.hours },
-  { icon: <Leaf size={18} />, title: "Local Andhra table", text: "Rice, fry, and pulusu from Jubilee Hills" },
+  { icon: <Leaf size={18} />, title: "Local Andhra table", text: "Rice, fry, and pulusu from Madhapur" },
   { icon: <QrCode size={18} />, title: "Table QR ordering", text: "One group code. One shared bill." },
   { icon: <Gift size={18} />, title: "Bagara Rewards", text: "100 welcome points · 1 pt / ₹100" },
   { icon: <Globe size={18} />, title: "Three languages", text: "English · हिन्दी · తెలుగు" },
@@ -226,7 +226,7 @@ const REVIEWS = [
     who: "Karthik M.",
   },
   {
-    text: "Mix thali hits every craving. Spice, curd, and rice done right in Jubilee Hills.",
+    text: "Mix thali hits every craving. Spice, curd, and rice done right in Madhapur.",
     who: "Sana K.",
   },
 ];
@@ -243,7 +243,7 @@ export default function AboutPage() {
         <div className="wrap hero-grid">
           <div>
             <Reveal>
-              <span className="eyebrow">Our story · Jubilee Hills</span>
+              <span className="eyebrow">Our story · Madhapur</span>
               <h1 className="h-display h-xl">
                 Bagara <em className="about-em">&amp;</em>
                 <br />
@@ -350,8 +350,8 @@ export default function AboutPage() {
                   <MapPin size={18} />
                 </span>
                 <div>
-                  <strong>Jubilee Hills</strong>
-                  <span>Road no 7, Hyderabad</span>
+                  <strong>Madhapur</strong>
+                  <span>Ayyappa Society, Hyderabad</span>
                 </div>
               </Floaty>
               <div className="about-orb" aria-hidden>
@@ -373,7 +373,7 @@ export default function AboutPage() {
               <em className="about-em">slow pulusu</em>
             </h2>
             <p className="lead">
-              Bagara & Pulusu is an Andhra table in Jubilee Hills — bagara rice,
+              Bagara & Pulusu is an Andhra table in Madhapur — bagara rice,
               fiery fries, tamarind pulusu, and thalis built for sharing.
             </p>
             <p className="lead" style={{ marginTop: "1rem" }}>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Feedback",
-  description: "Send a compliment or a complaint to the owner of Bagara & Pulusu, Jubilee Hills.",
+  description: "Send a compliment or a complaint to the owner of Bagara & Pulusu, Madhapur.",
   alternates: { canonical: "/feedback" },
 };
 

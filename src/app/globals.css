@@ -13581,3 +13581,173 @@ html[data-intro="skip"] .intro-splash {
   pointer-events: none;
 }
 
+/* ---------- Day sales (owner + reception) ---------- */
+.day-sales {
+  display: grid;
+  gap: 1rem;
+}
+.day-sales-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.day-sales-date-row,
+.day-sales-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+.day-sales-date-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 0.88rem;
+}
+.day-sales-date-field input {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.day-sales-kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.day-sales-print-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 0.85rem;
+}
+.day-sales-print-head h2 {
+  margin: 0.15rem 0 0.2rem;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+}
+.day-sales-print-meta {
+  margin: 0;
+  font-size: 0.82rem;
+  text-align: right;
+}
+.day-sales-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+.day-sales-kpi {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  background: var(--surface);
+  display: grid;
+  gap: 0.25rem;
+}
+.day-sales-kpi span {
+  font-size: 0.78rem;
+  opacity: 0.7;
+}
+.day-sales-kpi strong {
+  font-size: 1.2rem;
+}
+.day-sales-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.day-sales-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0.95rem 1rem;
+  background: var(--surface);
+  display: grid;
+  gap: 0.65rem;
+}
+.day-sales-card h3 {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+}
+.day-sales-table-wrap {
+  overflow-x: auto;
+}
+.day-sales-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.day-sales-table th,
+.day-sales-table td {
+  text-align: left;
+  padding: 0.45rem 0.35rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.day-sales-table th {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.72;
+  font-weight: 600;
+}
+.day-sales-table td:last-child,
+.day-sales-table th:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .day-sales-kpis,
+  .day-sales-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .day-sales-kpis,
+  .day-sales-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  .day-sales-print,
+  .day-sales-print * {
+    visibility: visible !important;
+  }
+  .day-sales-print {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    padding: 0;
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .day-sales-card,
+  .day-sales-kpi {
+    break-inside: avoid;
+    border-color: #ccc !important;
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+  .day-sales-table th,
+  .day-sales-table td {
+    border-color: #ddd !important;
+  }
+}
+

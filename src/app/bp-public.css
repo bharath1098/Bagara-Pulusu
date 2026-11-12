@@ -151,7 +151,7 @@
   background: color-mix(in srgb, var(--sky-500, var(--bp-olive)) 80%, #c0b49e) !important;
 }
 
-/* Homepage header — sits on the dark hero */
+/* Homepage header — transparent over the dark hero; brand + tools match other pages */
 .bp-header.is-home {
   background: transparent;
   color: #f7f4ee;
@@ -162,31 +162,9 @@
 .bp-header.is-home .burger {
   color: #f7f4ee;
 }
-.bp-header.is-home .brand-text strong {
-  font-family: var(--font-hero), var(--font-body), sans-serif;
-  font-size: 1.02rem;
-  letter-spacing: 0.14em;
-  font-weight: 800;
-}
-.bp-header.is-home .brand-text small {
-  letter-spacing: 0.28em;
-  font-size: 0.58rem;
-}
 .bp-header.is-home .brand-mark {
-  width: 52px;
-  height: 52px;
-  background: transparent;
-  box-shadow: none;
-}
-.bp-header.is-home .nav-links {
-  gap: 0.1rem;
-}
-.bp-header.is-home .nav-links a {
-  background: transparent;
-  border-radius: 0;
-  padding: 0.4rem 0.62rem;
-  font-size: 0.92rem;
-  font-weight: 500;
+  background: #f4ebe0;
+  box-shadow: 0 0 0 1px rgba(139, 90, 43, 0.28);
 }
 .bp-header.is-home .nav-links a:hover,
 .bp-header.is-home .nav-links a.active {
@@ -199,13 +177,11 @@
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 .bp-header.is-home .header-icon {
-  background: transparent;
-  border-color: transparent;
   color: #f7f4ee;
 }
 .bp-header.is-home .header-icon:hover {
   color: #d7e48a;
-  border-color: transparent;
+  border-color: rgba(215, 228, 138, 0.45);
 }
 .bp-header.is-home .pref-trigger {
   width: 40px;
@@ -213,8 +189,8 @@
   padding: 0;
   justify-content: center;
   border-radius: 50%;
-  background: transparent;
-  border-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
   color: #f7f4ee;
 }
 .bp-header.is-home .pref-trigger-label {
@@ -1447,23 +1423,8 @@
   .bp-order-online {
     display: none;
   }
-  .bp-header.is-home .brand-mark {
-    width: 44px;
-    height: 44px;
-  }
-  .bp-header.is-home .brand-text {
+  .bp-header .brand-text {
     display: block;
-  }
-  .bp-header.is-home .brand-text strong {
-    font-size: 0.9rem;
-    letter-spacing: 0.12em;
-  }
-  .bp-header.is-home .brand-text small {
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
-  }
-  .bp-header.is-home .header-tools {
-    gap: 0.2rem;
   }
   .bp-why-grid {
     grid-template-columns: 1fr;
@@ -1662,21 +1623,6 @@
   }
   .bp-cats-grid {
     grid-template-columns: repeat(3, 1fr);
-  }
-  .bp-header.is-home .brand-mark {
-    width: 40px;
-    height: 40px;
-  }
-  .bp-header.is-home .brand-text {
-    display: block;
-  }
-  .bp-header.is-home .brand-text strong {
-    font-size: 0.82rem;
-    letter-spacing: 0.1em;
-  }
-  .bp-header.is-home .brand-text small {
-    font-size: 0.52rem;
-    letter-spacing: 0.16em;
   }
 }
 

@@ -122,7 +122,7 @@ export function IntroSplash() {
             />
           </span>
         </div>
-        <p className="intro-kicker">Jubilee Hills · Hyderabad</p>
+        <p className="intro-kicker">Madhapur · Hyderabad</p>
         <h1 className="intro-title">
           <span>Bagara</span>
           <em>&amp; Pulusu</em>

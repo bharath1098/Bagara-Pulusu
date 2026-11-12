@@ -33,12 +33,12 @@ const heroSans = Outfit({
 });
 
 const description =
-  "Bagara & Pulusu in Jubilee Hills, Hyderabad. Andhra rice, fries, pulusu and thalis, open daily 11:00 AM–11:30 PM. Reserve a table or scan the QR to order.";
+  "Bagara & Pulusu in Madhapur, Hyderabad. Andhra rice, fries, pulusu and thalis, open daily 11:00 AM–11:30 PM. Reserve a table or scan the QR to order.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: {
-    default: "Bagara & Pulusu | Andhra Dining in Jubilee Hills",
+    default: "Bagara & Pulusu | Andhra Dining in Madhapur",
     template: "%s · Bagara & Pulusu",
   },
   description,

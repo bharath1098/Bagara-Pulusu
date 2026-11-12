@@ -313,7 +313,7 @@ export function SiteFooter() {
             {tr.staff} login
           </Link>
           <br />
-          Warm evenings in Jubilee Hills.
+          Warm evenings in Madhapur.
         </p>
       </div>
     </footer>

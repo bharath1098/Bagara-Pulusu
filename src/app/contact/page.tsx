@@ -9,7 +9,7 @@ import { CAFE } from "@/lib/cafe";
 import { CAFE_MEDIA } from "@/lib/media";
 
 export const metadata: Metadata = {
-  title: "Contact Bagara & Pulusu Jubilee Hills",
+  title: "Contact Bagara & Pulusu Madhapur",
   description: `Find Bagara & Pulusu at ${CAFE.addressLines.join(", ")}, ${CAFE.city}. Call ${CAFE.phoneDisplay} or email ${CAFE.email}.`,
   alternates: { canonical: "/contact" },
 };

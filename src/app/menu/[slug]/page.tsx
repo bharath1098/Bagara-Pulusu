@@ -23,7 +23,7 @@ export async function generateMetadata({
   const flavour = getExplore(slug);
   if (flavour) {
     return {
-      title: `${flavour.name} at Bagara & Pulusu Jubilee Hills`,
+      title: `${flavour.name} at Bagara & Pulusu Madhapur`,
       description: metaDescription(flavour.story),
       alternates: { canonical: `/menu/${slug}` },
     };
@@ -33,7 +33,7 @@ export async function generateMetadata({
   return {
     title: dish.name,
     description: metaDescription(
-      dish.description || `${dish.name} from the ${dish.category} menu at Bagara & Pulusu, Jubilee Hills.`,
+      dish.description || `${dish.name} from the ${dish.category} menu at Bagara & Pulusu, Madhapur.`,
     ),
     alternates: { canonical: `/menu/${slug}` },
   };

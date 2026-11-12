@@ -82,7 +82,7 @@ export function HeroCarousel() {
           <div className="hero-main-shade" />
           <span className="hero-tag">{slide.tag}</span>
           <span className="hero-rating">
-            <Star size={14} fill="#f2b84b" color="#f2b84b" /> 4.5 · Loved in Jubilee Hills
+            <Star size={14} fill="#f2b84b" color="#f2b84b" /> 4.5 · Loved in Madhapur
           </span>
           <div className="hero-caption" key={i}>
             <h3>{slide.title}</h3>

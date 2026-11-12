@@ -30,9 +30,9 @@ export function cafeJsonLd() {
         acceptsReservations: true,
         address: {
           "@type": "PostalAddress",
-          streetAddress: "Road no 7, Jubilee Hills, Bhavani Nagar",
+          streetAddress: CAFE.addressLines.join(", "),
           addressLocality: CAFE.city,
-          postalCode: "500045",
+          postalCode: "500081",
           addressRegion: "Telangana",
           addressCountry: "IN",
         },

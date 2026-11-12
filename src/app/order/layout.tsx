@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Your order",
-  description: "Order from your table at Bagara & Pulusu, Jubilee Hills.",
+  description: "Order from your table at Bagara & Pulusu, Madhapur.",
   robots: { index: false, follow: false },
 };
 

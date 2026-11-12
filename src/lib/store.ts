@@ -56,27 +56,17 @@ const DEFAULT_SETTINGS: AppSettings = {
 };
 
 function buildTables(): CafeTable[] {
-  const indoor = Array.from({ length: 5 }, (_, i) => {
+  // Start with 5 indoor tables; staff can add more anytime (indoor/outdoor).
+  return Array.from({ length: 5 }, (_, i) => {
     const n = i + 1;
     return {
-      id: `bagara-I${n}`,
-      label: `Bagara I${n}`,
+      id: tableIdFor("indoor", n),
+      label: `Table ${n}`,
       section: "indoor" as const,
       number: n,
       assignedWaiterId: null,
     };
   });
-  const outdoor = Array.from({ length: 15 }, (_, i) => {
-    const n = i + 1;
-    return {
-      id: `bagara-O${n}`,
-      label: `Bagara O${n}`,
-      section: "outdoor" as const,
-      number: n,
-      assignedWaiterId: null,
-    };
-  });
-  return [...indoor, ...outdoor];
 }
 
 function buildStaff(): StaffUser[] {
@@ -1980,8 +1970,7 @@ function tableIdFor(section: TableSection, number: number) {
 }
 
 function tableLabelFor(section: TableSection, number: number) {
-  const prefix = section === "indoor" ? "I" : "O";
-  return `Bagara ${prefix}${number}`;
+  return section === "indoor" ? `Table ${number}` : `Outdoor ${number}`;
 }
 
 export async function createTable(

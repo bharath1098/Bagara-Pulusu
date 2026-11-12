@@ -62,6 +62,11 @@ const StatsDashboard = dynamic(() => import("@/components/StatsDashboard"), {
   loading: () => <p className="muted">Loading analytics…</p>,
 });
 
+const DaySalesPanel = dynamic(() => import("@/components/DaySalesPanel"), {
+  ssr: false,
+  loading: () => <p className="muted">Loading day sales…</p>,
+});
+
 type StaffUser = { id: string; name: string; email: string; role: StaffRole; active?: boolean };
 
 const FORCE_CLOSE_REASONS = [
@@ -473,6 +478,7 @@ export default function StaffDashboard() {
       { id: "team", label: "Team", icon: UserPlus, roles: ["owner"] },
       { id: "reservations", label: "Reservations", icon: CalendarDays, roles: ["owner", "reception"] },
       { id: "feedback", label: "Feedback", icon: MessageSquareHeart, roles: ["owner"], count: dash?.stats?.pendingFeedback },
+      { id: "sales", label: "Sales", icon: Banknote, roles: ["owner", "reception"] },
       { id: "stats", label: "Stats", icon: BarChart3, roles: ["owner"] },
       { id: "qrs", label: "Table QRs", icon: QrCode, roles: ["owner", "reception"] },
     ];
@@ -1971,7 +1977,7 @@ export default function StaffDashboard() {
                   {editingTableId ? "Edit table" : "Add table"}
                 </h2>
                 <p className="muted" style={{ margin: "0.35rem 0 0", fontSize: "0.88rem" }}>
-                  Indoor tables use I numbers, outdoor use O. Leave number blank to auto-assign the next free one.
+                  Add indoor or outdoor tables anytime. Leave number blank to auto-assign the next free one.
                 </p>
                 <div className="team-form-grid">
                   <NeoSelect
@@ -1984,8 +1990,8 @@ export default function StaffDashboard() {
                       }))
                     }
                   >
-                    <option value="outdoor">Outdoor</option>
                     <option value="indoor">Indoor</option>
+                    <option value="outdoor">Outdoor</option>
                   </NeoSelect>
                   <NeoInput
                     label="Number"
@@ -1999,7 +2005,7 @@ export default function StaffDashboard() {
                     label="Label (optional)"
                     value={tableForm.label}
                     onChange={(e) => setTableForm((f) => ({ ...f, label: e.target.value }))}
-                    placeholder="Bagara O16"
+                    placeholder="Table 6"
                   />
                 </div>
                 {tableNotice && <p className="order-notice">{tableNotice}</p>}
@@ -3231,6 +3237,8 @@ export default function StaffDashboard() {
             {dash.feedback.length === 0 && <Empty text="No feedback yet." />}
           </div>
         )}
+
+        {tab === "sales" && <DaySalesPanel />}
 
         {tab === "stats" && <StatsDashboard />}
 

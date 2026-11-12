@@ -6,7 +6,7 @@ export default function GalleryPage() {
       <PageHero
         eyebrow="Gallery"
         title="Moments that matter"
-        subtitle="Photos coming soon — for now, meet us at the table in Jubilee Hills."
+        subtitle="Photos coming soon — for now, meet us at the table in Madhapur."
       />
       <section className="section" style={{ paddingTop: "2rem" }}>
         <div className="wrap">

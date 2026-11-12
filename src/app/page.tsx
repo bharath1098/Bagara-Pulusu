@@ -86,7 +86,7 @@ const REVIEWS = [
   },
   {
     quote:
-      "Best pulusu in Jubilee Hills. Quiet enough to talk, bold enough to remember.",
+      "Best pulusu in Madhapur. Quiet enough to talk, bold enough to remember.",
     name: "Sneha P.",
     meta: "Zomato · 4.5★",
   },
@@ -136,7 +136,7 @@ export default function HomePage() {
                 transition={{ duration: 0.65, delay: 0.32 }}
               >
                 Fresh bagara rice, fiery fries, and slow tamarind pulusu —
-                cooked with care every night in Jubilee Hills.
+                cooked with care every night in Madhapur.
               </motion.p>
               <motion.div
                 className="bp-hero-actions"
@@ -209,7 +209,7 @@ export default function HomePage() {
                 </h2>
                 <p className="bp-lede">
                   Bagara is the rice. Pulusu is the gravy. Together they are the
-                  table we cook for every night in Jubilee Hills — whole spices,
+                  table we cook for every night in Madhapur — whole spices,
                   tamarind heat, and no shortcuts.
                 </p>
                 <Link href="/about" className="bp-btn bp-btn-solid">

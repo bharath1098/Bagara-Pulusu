@@ -1,6 +1,6 @@
 # Bagara & Pulusu
 
-End-to-end restaurant platform for **Bagara & Pulusu** (Jubilee Hills, Hyderabad): public website, QR table ordering with group codes, staff roles, kitchen board, billing, loyalty, reservations, and owner stats.
+End-to-end restaurant platform for **Bagara & Pulusu** (Madhapur, Hyderabad): public website, QR table ordering with group codes, staff roles, kitchen board, billing, loyalty, reservations, and owner stats.
 
 Same stack and integrations as Lunar Cafe: Next.js App Router, libSQL/Turso, staff HMAC sessions, UTM logging, SEO (sitemap/robots/JSON-LD).
 

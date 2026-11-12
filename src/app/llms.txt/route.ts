@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export function GET() {
   const body = `# ${CAFE.name}
 
-> ${CAFE.name} is an Andhra restaurant in Jubilee Hills, Hyderabad. Rice, fries, pulusu, and thalis. Open every day ${CAFE.hours}.
+> ${CAFE.name} is an Andhra restaurant in Madhapur, Hyderabad. Rice, fries, pulusu, and thalis. Open every day ${CAFE.hours}.
 
 ## Facts
 

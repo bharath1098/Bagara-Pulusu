@@ -6,7 +6,7 @@ import { CAFE } from "@/lib/cafe";
 export const metadata: Metadata = {
   title: "Terms",
   description:
-    "Reservations, table orders, prices in rupees, and Bagara Rewards at Bagara & Pulusu, Jubilee Hills.",
+    "Reservations, table orders, prices in rupees, and Bagara Rewards at Bagara & Pulusu, Madhapur.",
   alternates: { canonical: "/terms" },
 };
 
