@@ -2,16 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ComponentType } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import clsx from "clsx";
 import {
   ArrowUpRight,
+  CalendarDays,
   Clock,
+  Gift,
+  Home,
+  Images,
+  Info,
   Mail,
   Menu as MenuIcon,
+  MessageSquare,
   Phone,
   MapPin,
+  UtensilsCrossed,
   X,
 } from "lucide-react";
 import { ClosingSoonBanner } from "./ClosingSoonBanner";
@@ -22,11 +29,17 @@ import { SiteSearch } from "./SiteSearch";
 import { CopyButton } from "./CopyButton";
 import { CAFE } from "@/lib/cafe";
 
+type NavLink = {
+  href: string;
+  label: string;
+  icon: ComponentType<{ size?: number; strokeWidth?: number }>;
+};
+
 export function SiteHeader() {
   const { tr } = usePrefs();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -35,22 +48,30 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => setMoreOpen(false), [pathname]);
 
-  const links = [
-    { href: "/", label: tr.home },
-    { href: "/menu", label: tr.menu },
-    { href: "/about", label: tr.about },
-    { href: "/gallery", label: tr.gallery },
-    { href: "/reserve", label: tr.reserve },
-    { href: "/loyalty", label: tr.loyalty },
-    { href: "/contact", label: tr.contact },
+  const links: NavLink[] = [
+    { href: "/", label: tr.home, icon: Home },
+    { href: "/menu", label: tr.menu, icon: UtensilsCrossed },
+    { href: "/about", label: tr.about, icon: Info },
+    { href: "/gallery", label: tr.gallery, icon: Images },
+    { href: "/reserve", label: tr.reserve, icon: CalendarDays },
+    { href: "/loyalty", label: tr.loyalty, icon: Gift },
+    { href: "/contact", label: tr.contact, icon: MapPin },
+  ];
+
+  const primaryHrefs = ["/", "/menu", "/reserve", "/loyalty", "/contact"];
+  const primaryTabs = links.filter((l) => primaryHrefs.includes(l.href));
+  const moreTabs: NavLink[] = [
+    ...links.filter((l) => !primaryHrefs.includes(l.href)),
+    { href: "/feedback", label: tr.feedback, icon: MessageSquare },
   ];
 
   // a link is active on its own page and on any page below it (/menu/cheese-omelette -> Menu)
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
+  const moreActive = moreTabs.some((l) => isActive(l.href));
   const home = pathname === "/";
   const telHref = `tel:${CAFE.phoneDisplay.replace(/\s/g, "")}`;
 
@@ -97,67 +118,92 @@ export function SiteHeader() {
             <Link href="/menu" className={home ? "bp-order-online" : "btn btn-gold btn-sm"}>
               {home ? "Order Online" : "Order Now"}
             </Link>
-            <button
-              className="burger"
-              aria-label="Open menu"
-              onClick={() => setOpen(true)}
-            >
-              <MenuIcon size={20} />
-            </button>
           </div>
         </div>
       </header>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            className="drawer"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "1rem",
-              }}
-            >
-              <span className="eyebrow">Bagara & Pulusu</span>
-              <button
-                className="burger"
-                style={{ display: "grid" }}
-                aria-label="Close menu"
-                onClick={() => setOpen(false)}
-              >
-                <X size={20} />
-              </button>
-            </div>
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={clsx(isActive(l.href) && "active")}
-                aria-current={isActive(l.href) ? "page" : undefined}
-              >
-                {l.label}
-              </Link>
-            ))}
+      <nav className="mobile-tabbar no-print" aria-label="Mobile">
+        {primaryTabs.map((l) => {
+          const Icon = l.icon;
+          return (
             <Link
-              href="/feedback"
-              className={clsx(isActive("/feedback") && "active")}
-              aria-current={isActive("/feedback") ? "page" : undefined}
+              key={l.href}
+              href={l.href}
+              className={clsx("mobile-tab", isActive(l.href) && "on")}
+              aria-label={l.label}
+              aria-current={isActive(l.href) ? "page" : undefined}
+              onClick={() => setMoreOpen(false)}
             >
-              {tr.feedback}
+              <span className="mobile-tab-ico" aria-hidden>
+                <Icon size={20} strokeWidth={1.6} />
+              </span>
             </Link>
-            <Link href="/menu" className="btn btn-gold" style={{ marginTop: "0.75rem" }}>
-              {home ? "Order Online" : "Order Now"}
-            </Link>
-            <div className="drawer-theme-row">
-              <PreferenceMenu />
-            </div>
+          );
+        })}
+        <button
+          type="button"
+          className={clsx("mobile-tab", (moreOpen || moreActive) && "on")}
+          aria-label="More"
+          aria-expanded={moreOpen}
+          onClick={() => setMoreOpen((v) => !v)}
+        >
+          <span className="mobile-tab-ico" aria-hidden>
+            <MenuIcon size={20} strokeWidth={1.6} />
+          </span>
+        </button>
+      </nav>
+
+      <AnimatePresence>
+        {moreOpen && (
+          <motion.div
+            className="mobile-more-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.16 }}
+            onClick={() => setMoreOpen(false)}
+          >
+            <motion.div
+              className="mobile-more-sheet"
+              initial={{ y: 28, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 18, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-label="More pages"
+            >
+              <div className="mobile-more-grip" aria-hidden />
+              <div className="mobile-more-head">
+                <span className="eyebrow">More</span>
+                <button
+                  type="button"
+                  className="mobile-more-close"
+                  aria-label="Close"
+                  onClick={() => setMoreOpen(false)}
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              <div className="mobile-more-grid">
+                {moreTabs.map((l) => {
+                  const Icon = l.icon;
+                  return (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      className={clsx("mobile-more-link", isActive(l.href) && "on")}
+                      aria-current={isActive(l.href) ? "page" : undefined}
+                    >
+                      <span className="mobile-more-ico" aria-hidden>
+                        <Icon size={18} strokeWidth={1.7} />
+                      </span>
+                      {l.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

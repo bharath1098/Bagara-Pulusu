@@ -1419,7 +1419,7 @@
     font-size: clamp(1.45rem, 5.5vw, 1.85rem);
     margin-bottom: 0.4rem;
   }
-  /* Keep header tools on screen — Order Online lives in the drawer on small screens */
+  /* Order Online lives in the sticky bottom Menu tab on small screens */
   .bp-order-online {
     display: none;
   }
