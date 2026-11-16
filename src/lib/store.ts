@@ -127,6 +127,34 @@ function withImages(menu: CafeStore["menu"]) {
   }));
 }
 
+const MENU_ALIASES: Record<string, string> = {
+  "mixed veg curry": "veg curry",
+  "alu gobi kurma": "aloo gobi kurma",
+  "chilli panner": "chilli paneer",
+};
+
+/** Push latest seed prices/copy into the live menu; keep ids, availability, custom photos. */
+function syncMenuFromSeed(menu: CafeStore["menu"]): CafeStore["menu"] {
+  const byName = new Map(
+    menu.map((m) => [m.name.trim().toLowerCase(), m] as const),
+  );
+  return SEED_MENU.map((seed) => {
+    const key = seed.name.trim().toLowerCase();
+    const existing =
+      byName.get(key) ||
+      [...byName.entries()].find(([name]) => MENU_ALIASES[name] === key)?.[1];
+    if (!existing) return { ...seed };
+    return {
+      ...seed,
+      id: existing.id,
+      available: existing.available,
+      image: isCustomMenuImage(existing.image) ? existing.image : seed.image,
+      discountPercent: existing.discountPercent,
+      discountPrice: existing.discountPrice,
+    };
+  });
+}
+
 function createSeedStore(): CafeStore {
   return {
     cafeId: CAFE.id,
@@ -187,7 +215,7 @@ function normalizeSettings(settings: AppSettings): AppSettings {
 async function loadStore(): Promise<CafeStore> {
   if (global.__bagaraStore) {
     global.__bagaraStore.settings = normalizeSettings(global.__bagaraStore.settings);
-    global.__bagaraStore.menu = withImages(global.__bagaraStore.menu);
+    global.__bagaraStore.menu = withImages(syncMenuFromSeed(global.__bagaraStore.menu));
     global.__bagaraStore.staffAlerts = global.__bagaraStore.staffAlerts || [];
     return global.__bagaraStore;
   }
@@ -195,16 +223,17 @@ async function loadStore(): Promise<CafeStore> {
   const existing = await readStore();
   if (existing) {
     existing.settings = normalizeSettings(existing.settings);
-    existing.menu = withImages(existing.menu);
+    existing.menu = withImages(syncMenuFromSeed(existing.menu));
     existing.staffAlerts = existing.staffAlerts || [];
     global.__bagaraStore = existing;
+    await writeStore(existing);
     return existing;
   }
 
   const imported = importLegacyJson();
   const seed = imported ?? createSeedStore();
   seed.settings = normalizeSettings(seed.settings);
-  seed.menu = withImages(seed.menu);
+  seed.menu = withImages(syncMenuFromSeed(seed.menu));
   seed.staffAlerts = seed.staffAlerts || [];
   await writeStore(seed);
   if (imported) archiveLegacyJson();
@@ -393,10 +422,9 @@ export async function getPublicMenu() {
   const store = await loadStore();
   return store.menu
     .filter((m) => m.available)
-    .map(({ price: _p, variants, discountPercent, discountPrice, ...rest }) => ({
+    .map(({ discountPercent, discountPrice, ...rest }) => ({
       ...rest,
       image: rest.image || imageForMenuItem(rest.name, rest.category),
-      variants: variants?.map(({ price: _vp, ...v }) => v),
       hasDiscount: Boolean(discountPercent || discountPrice),
     }));
 }

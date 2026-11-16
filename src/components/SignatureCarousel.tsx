@@ -10,28 +10,28 @@ const SIGNATURES = [
     d: "Fragrant bagara rice tempered with spices and ghee.",
     category: "Rices",
     isVeg: true,
-    price: 120,
+    price: 89,
   },
   {
     name: "Chepala Pulusu",
     d: "Tangy tamarind fish pulusu — our other namesake.",
     category: "Curries & Pulusu",
     isVeg: false,
-    price: 280,
+    price: 199,
   },
   {
     name: "Chicken Fry",
     d: "Crispy Andhra chicken fry for the middle of the table.",
     category: "Frys",
     isVeg: false,
-    price: 220,
+    price: 199,
   },
   {
     name: "Mix Thali",
     d: "Rice with chicken, fish, boti, liver — the full spread.",
     category: "Thalis",
     isVeg: false,
-    price: 449,
+    price: 399,
   },
 ].map((s) => ({ ...s, href: `/menu/${slugify(s.name)}` }));
 

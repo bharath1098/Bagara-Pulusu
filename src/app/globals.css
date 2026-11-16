@@ -2891,7 +2891,7 @@ h4 {
   min-height: 4.4rem;
 }
 .public-menu .order-menu-row {
-  grid-template-columns: 84px minmax(0, 1fr);
+  grid-template-columns: 84px minmax(0, 1fr) auto;
 }
 .menu-toolbar {
   position: sticky;
@@ -7078,7 +7078,7 @@ body:has(.guest-table-bar) {
     grid-template-columns: 72px minmax(0, 1fr) auto;
   }
   .public-menu .order-menu-row {
-    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-columns: 72px minmax(0, 1fr) auto;
   }
   .public-menu {
     padding-top: 5.6rem;
@@ -13897,14 +13897,15 @@ html[data-intro="skip"] .intro-splash {
   }
 }
 @media print {
-  body * {
+  /* Only for the day-sales report — do not blank other print pages (menu card, etc.) */
+  body:has(.day-sales-print) * {
     visibility: hidden !important;
   }
-  .day-sales-print,
-  .day-sales-print * {
+  body:has(.day-sales-print) .day-sales-print,
+  body:has(.day-sales-print) .day-sales-print * {
     visibility: visible !important;
   }
-  .day-sales-print {
+  body:has(.day-sales-print) .day-sales-print {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -13912,18 +13913,18 @@ html[data-intro="skip"] .intro-splash {
     background: #fff !important;
     color: #111 !important;
   }
-  .no-print {
+  body:has(.day-sales-print) .no-print {
     display: none !important;
   }
-  .day-sales-card,
-  .day-sales-kpi {
+  body:has(.day-sales-print) .day-sales-card,
+  body:has(.day-sales-print) .day-sales-kpi {
     break-inside: avoid;
     border-color: #ccc !important;
     background: #fff !important;
     box-shadow: none !important;
   }
-  .day-sales-table th,
-  .day-sales-table td {
+  body:has(.day-sales-print) .day-sales-table th,
+  body:has(.day-sales-print) .day-sales-table td {
     border-color: #ddd !important;
   }
 }

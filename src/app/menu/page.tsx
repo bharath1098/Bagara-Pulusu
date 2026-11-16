@@ -7,23 +7,25 @@ import { LayoutGrid, List, Search } from "lucide-react";
 import clsx from "clsx";
 import { CategoryBar } from "@/components/CategoryBar";
 import { PublicShell } from "@/components/PublicShell";
+import { usePrefs } from "@/components/Providers";
+import { formatMoney } from "@/lib/cafe";
 import { imageForMenuItem } from "@/lib/media";
-import { loadPublicData } from "@/lib/public-data";
+import { loadPublicData, type PublicMenuItem } from "@/lib/public-data";
 
-type PublicItem = {
-  id: string;
-  slug: string;
-  category: string;
-  name: string;
-  description: string;
-  image?: string;
-  isVeg?: boolean;
-  isNew?: boolean;
-  isHighlighted?: boolean;
-  hasDiscount?: boolean;
-};
+type PublicItem = PublicMenuItem;
+
+function priceLabel(item: PublicItem, currency: string) {
+  if (!item.variants?.length) return formatMoney(item.price, currency);
+  const prices = item.variants.map((v) => v.price);
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  return min === max
+    ? formatMoney(min, currency)
+    : `${formatMoney(min, currency)}–${formatMoney(max, currency)}`;
+}
 
 export default function MenuPage() {
+  const { currency } = usePrefs();
   const [items, setItems] = useState<PublicItem[]>([]);
   const [active, setActive] = useState("All");
   const [query, setQuery] = useState("");
@@ -83,13 +85,14 @@ export default function MenuPage() {
       item.image ||
       mapped ||
       "";
+    const price = priceLabel(item, currency);
     if (menuView === "card") {
       return (
         <Link
           key={item.id}
           href={`/menu/${item.slug}`}
           className="order-menu-card"
-          aria-label={item.name}
+          aria-label={`${item.name}, ${price}`}
         >
           <span className="order-menu-card-photo">
             <Image src={src} alt="" fill className="cover" sizes="240px" />
@@ -109,6 +112,9 @@ export default function MenuPage() {
               <span className="order-menu-card-title">{item.name}</span>
             </strong>
             <small>{item.description || " "}</small>
+            <span className="order-menu-card-foot">
+              <span className="order-menu-price">{price}</span>
+            </span>
           </span>
         </Link>
       );
@@ -118,7 +124,7 @@ export default function MenuPage() {
         key={item.id}
         href={`/menu/${item.slug}`}
         className="order-menu-row"
-        aria-label={item.name}
+        aria-label={`${item.name}, ${price}`}
       >
         <span className="order-menu-thumb">
           <Image src={src} alt="" fill className="cover" sizes="84px" />
@@ -134,6 +140,7 @@ export default function MenuPage() {
           </span>
           {item.description && <small>{item.description}</small>}
         </span>
+        <span className="order-menu-price">{price}</span>
       </Link>
     );
   }

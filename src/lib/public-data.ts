@@ -6,6 +6,8 @@ export type PublicMenuItem = {
   category: string;
   name: string;
   description: string;
+  price: number;
+  variants?: { id: string; label: string; price: number }[];
   image?: string;
   isVeg?: boolean;
   isNew?: boolean;

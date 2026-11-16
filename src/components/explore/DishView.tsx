@@ -9,7 +9,9 @@ import { ArrowLeft, ArrowRight, Leaf, QrCode, Sparkles, Tag } from "lucide-react
 import clsx from "clsx";
 import { PublicShell } from "@/components/PublicShell";
 import { Reveal } from "@/components/Reveal";
+import { usePrefs } from "@/components/Providers";
 import { CoreScatter } from "@/components/explore/CoreScatter";
+import { formatMoney } from "@/lib/cafe";
 import { themeForCategory } from "@/lib/explore";
 import { imageForMenuItem } from "@/lib/media";
 
@@ -19,12 +21,13 @@ export type DishData = {
   category: string;
   name: string;
   description: string;
+  price?: number;
   image?: string;
   isVeg?: boolean;
   isNew?: boolean;
   isHighlighted?: boolean;
   hasDiscount?: boolean;
-  variants?: { id: string; label: string }[];
+  variants?: { id: string; label: string; price?: number }[];
   choices?: { id: string; label: string; options: string[] }[];
 };
 
@@ -78,6 +81,7 @@ export function DishView({
   prev?: DishData;
   next?: DishData;
 }) {
+  const { currency } = usePrefs();
   const { flavour, theme, pattern } = themeForCategory(dish.category);
   const photo = dish.image || imageForMenuItem(dish.name, dish.category);
   const parts = parseDescription(dish.description || "");
@@ -92,6 +96,21 @@ export function DishView({
     dish.hasDiscount && "Offer",
   ].filter(Boolean) as string[];
 
+  const priceText = (() => {
+    if (dish.variants?.length) {
+      const prices = dish.variants
+        .map((v) => v.price)
+        .filter((p): p is number => typeof p === "number");
+      if (!prices.length) return null;
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+      return min === max
+        ? formatMoney(min, currency)
+        : `${formatMoney(min, currency)}–${formatMoney(max, currency)}`;
+    }
+    return typeof dish.price === "number" ? formatMoney(dish.price, currency) : null;
+  })();
+
   const meta = [
     { label: "Category", value: dish.category, Icon: Tag },
     { label: "Type", value: dish.isVeg ? "Vegetarian" : "Non-vegetarian", Icon: Leaf },
@@ -104,7 +123,18 @@ export function DishView({
 
   const detailLines = [
     ...(dish.variants?.length
-      ? [{ title: "Sizes & options", text: dish.variants.map((v) => v.label).join(" · ") }]
+      ? [
+          {
+            title: "Sizes & options",
+            text: dish.variants
+              .map((v) =>
+                typeof v.price === "number"
+                  ? `${v.label} · ${formatMoney(v.price, currency)}`
+                  : v.label,
+              )
+              .join(" · "),
+          },
+        ]
       : []),
     ...(dish.choices || []).map((c) => ({
       title: c.label,
@@ -116,7 +146,20 @@ export function DishView({
     <PublicShell>
       <div className="ex-page" style={vars(theme)} key={dish.slug}>
         {/* ---------- HERO ---------- */}
-        <section className="ex-hero">
+        <section className="ex-hero" style={{ position: "relative" }}>
+          <Link
+            href="/"
+            aria-label="Bagara & Pulusu home"
+            style={{ position: "absolute", top: 16, right: 16, zIndex: 20 }}
+          >
+            <Image
+              src="/media/cafe/logo.png"
+              alt="Bagara & Pulusu logo"
+              width={72}
+              height={72}
+              style={{ width: 72, height: "auto", objectFit: "contain" }}
+            />
+          </Link>
           <div className="ex-hero-bg">
             <motion.div
               className="ex-pattern"
@@ -152,6 +195,17 @@ export function DishView({
             >
               {dish.name}
             </motion.h1>
+            {priceText && (
+              <motion.p
+                className="ex-kind"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.65 }}
+                style={{ fontWeight: 700, letterSpacing: "0.02em" }}
+              >
+                {priceText}
+              </motion.p>
+            )}
             <div className="ex-rule" />
             {dish.description && (
               <motion.p
@@ -292,9 +346,10 @@ export function DishView({
                 <QrCode size={34} />
                 <h3>Order it at your table</h3>
                 <p>
-                  Scan the QR on your table to see prices, customise and add{" "}
-                  <strong>{dish.name}</strong> to your table&apos;s shared bill. Friends at the table
-                  can add to the same order.
+                  Scan the QR on your table to customise and add{" "}
+                  <strong>{dish.name}</strong>
+                  {priceText ? ` (${priceText})` : ""} to your table&apos;s shared bill. Friends at
+                  the table can add to the same order.
                 </p>
                 <div className="ex-cta-row" style={{ marginTop: "1.2rem", justifyContent: "flex-start" }}>
                   <Link href="/reserve" className="ex-pill ex-pill-solid">

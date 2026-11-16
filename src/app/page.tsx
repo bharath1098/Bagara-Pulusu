@@ -56,12 +56,12 @@ const CATEGORIES = [
 const POPULAR = SEED_MENU.filter((m) => m.isHighlighted).slice(0, 4);
 
 const TODAY = [
-  { name: "Bagara", price: 120 },
-  { name: "Chicken Fry", price: 220 },
-  { name: "Chepala Pulusu", price: 280 },
-  { name: "Chicken Biryani", price: 280 },
-  { name: "Chicken Thali", price: 299 },
-  { name: "Boti Curry", price: 280 },
+  { name: "Bagara", price: 89 },
+  { name: "Chicken Fry", price: 199 },
+  { name: "Chepala Pulusu", price: 199 },
+  { name: "Chicken Biryani", price: 249 },
+  { name: "Chicken Thali", price: 199 },
+  { name: "Boti Curry", price: 249 },
 ];
 
 const REASONS = [

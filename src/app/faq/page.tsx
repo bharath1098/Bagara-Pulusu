@@ -25,7 +25,7 @@ const FAQS = [
   },
   {
     q: "Can I see prices before I sit down?",
-    a: "The public menu lists dishes. Prices and ordering open once you scan the table QR, so the bill matches the table you are actually at.",
+    a: "Yes — the public menu shows prices for every dish. Ordering opens once you scan the table QR, so the bill matches the table you are actually at.",
   },
   {
     q: "Is there a vegetarian menu?",
